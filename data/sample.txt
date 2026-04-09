@@ -1,0 +1,3 @@
+LangChain is a framework for developing applications powered by LLMs.
+It provides tools for prompt management, chains, and agents.
+LangChain makes it easy to build context-aware AI applications.

@@ -77,3 +77,56 @@ python runnables.py
 ```
 
 **Key takeaway:** LCEL lets you build pipelines by connecting components with `|`, like Unix pipes.
+
+---
+
+### 5. Document Loaders (`document_loader.py`)
+
+Document loaders **read data from various sources** (text files, PDFs, web pages, databases) and return `Document` objects. Each `Document` has two fields: `page_content` (the text) and `metadata` (source info like filename, page number). LangChain has loaders for 100+ data sources.
+
+```bash
+
+```
+
+**Key takeaway:** Loaders standardize data from any source into `Document` objects.
+
+---
+
+### 6. Text Splitters (`text_splitter.py`)
+
+LLMs have token limits, so large documents must be **split into smaller chunks**. `RecursiveCharacterTextSplitter` (recommended) tries to split on natural boundaries (paragraphs → sentences → words). You control `chunk_size` (max characters per chunk) and `chunk_overlap` (shared characters between chunks to preserve context).
+
+Why you may not see visible overlap:
+You do not see visible overlap because RecursiveCharacterTextSplitter prefers clean separator boundaries like newlines/sentences, so your text is split into naturally small chunks without needing repeated overlap text.
+
+```bash
+python text_splitter.py
+```
+
+**Key takeaway:** Splitters break large text into LLM-friendly chunks while preserving context through overlap.
+
+---
+
+### 7. Vector Stores (`vector_store.py`)
+
+Vector stores convert text into **numerical vectors (embeddings)** and store them for similarity search. When you search, your query is also converted to a vector, and the store finds the most similar documents. FAISS is a popular in-memory vector store. This is the foundation of semantic search.
+
+```bash
+python vector_store.py
+```
+
+**Key takeaway:** Vector stores enable finding documents by meaning (semantic similarity), not just keyword matching.
+
+---
+
+### 8. Retrievers (`retrievers.py`)
+
+Retrievers are a **high-level interface** for fetching relevant documents. A retriever wraps a vector store (or other source) and returns documents for a query. The key pattern is **RAG (Retrieval Augmented Generation)**: retrieve relevant docs → inject them into a prompt → ask the LLM to answer based on the context.
+
+```bash
+python retrievers.py
+```
+
+**Key takeaway:** Retrievers + LLMs = RAG, where the model answers questions using your own data.
+
+---
