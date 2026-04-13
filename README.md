@@ -130,3 +130,68 @@ python retrievers.py
 **Key takeaway:** Retrievers + LLMs = RAG, where the model answers questions using your own data.
 
 ---
+
+### 9. Tools (`tools.py`)
+
+Tools give LLMs the ability to **interact with the outside world** — call APIs, do calculations, query databases, etc. You define tools using the `@tool` decorator with a function, docstring (used by the LLM to understand when to use it), and typed parameters. Tools can be invoked directly or given to an agent/model.
+
+```bash
+python tools.py
+```
+
+**Key takeaway:** Tools are Python functions with descriptions that LLMs can understand and call.
+
+---
+
+### 10. Tool Calling (`tool_calling.py`)
+
+Tool calling (function calling) lets the **LLM decide which tool to use** and with what arguments. You bind tools to a model with `bind_tools()`, then the model returns `tool_calls` in its response instead of (or alongside) text content. You then execute the tool and optionally feed the result back to the LLM.
+
+```bash
+python tool_calling.py
+```
+
+**Key takeaway:** The LLM analyzes the user's question and decides which tool to call.
+
+---
+
+### 11. Agents (`agents.py`)
+
+Agents are **LLMs that can reason and take actions autonomously**. Unlike chains (fixed sequence), agents dynamically decide which tools to call and in what order. The **ReAct** pattern (Reason + Act) lets the agent think step-by-step, call tools, observe results, and continue until it has an answer. 
+
+```bash
+python agents.py
+```
+
+**Key takeaway:** Agents = LLM + Tools + Reasoning loop. The LLM decides what to do next at each step.
+
+---
+
+## Concept Flow
+
+```
+                                  ┌─────────────┐
+                                  │   Models    │  (LLM / Chat Model)
+                                  └──────┬──────┘
+                                         │
+  ┌───────────┐    ┌──────────┐    ┌──────┴──────┐    ┌───────────────┐
+  │ Prompts   │───▶ Runnables ───▶  LLM Call     ───▶ Output Parsers│
+  │(templates)│    │ (LCEL)   │    │             │    │(structured)   │
+  └───────────┘    └──────────┘    └─────────────┘    └───────────────┘
+
+  ┌──────────────┐   ┌──────────────┐   ┌──────────────┐   ┌────────────┐
+  │Doc Loaders    ──▶Text Splitters ──▶ Vector Stores  ──▶ Retrievers │
+  │(load data)   │   │(chunk text)  │   │(embed+store) │   │(search)    │
+  └──────────────┘   └──────────────┘   └──────────────┘   └────────────┘
+
+  ┌──────────┐    ┌──────────────┐    ┌──────────┐
+  │  Tools   │───▶ Tool Calling  ───▶│  Agents  │
+  │(actions) │    │(LLM decides) │    │autonomous│
+  └──────────┘    └──────────────┘    └──────────┘
+```
+
+## Existing Examples
+
+- **`rag.py`** — Full RAG pipeline: loads a PDF, splits text, creates a vector store, and answers questions.
+- **`simple-agent.py`** — Simple agent using LangChain with a weather tool.
+
